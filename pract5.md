@@ -6,13 +6,13 @@
 
 ## 1. Установка Docker на Ubuntu
 
-Обновление списка пакетов
+Обновление списка пакетов.
 
 ```
 sudo apt update
 ```
 
-Установка необходимых зависимостей для Docker
+Установка необходимых зависимостей для Docker.
 
 ```
 sudo apt install apt-transport-https ca-certificates curl software-properties-common
@@ -24,3 +24,69 @@ sudo apt install apt-transport-https ca-certificates curl software-properties-co
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 ```
 
+Добавление Docker репозитория.
+
+```
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+```
+
+Установка Docker.
+
+```
+sudo apt update
+sudo apt install docker-ce -y
+```
+
+Проверка работы Docker и разрешение на автозапуск.
+
+```
+sudo systemctl status docker
+sudo systemctl enable docker
+```
+
+## 2. Создание базовой HTML-страницы
+
+Создание папки для проекта и создание простого HTML-файла.
+
+```
+mkdir ~/mydockerapp
+cd ~/mydockerapp
+nano index.html
+```
+
+Заполнение HTML-страницы.
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World!</title>
+</head>
+<body>
+    <h1>Hello, World!</h1>
+</body>
+</html>
+```
+
+## 3. Создание Dockerfile
+
+```
+nano Dockerfile
+```
+
+Заполнение файла.
+
+```
+# Используем официальный образ Nginx
+FROM nginx:stable
+
+# Копируем HTML-файл в соответствующую директорию Nginx
+COPY index.html /usr/share/nginx/html/
+
+# Открываем порт 80 для доступа к Nginx
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+```
